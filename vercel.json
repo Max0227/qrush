@@ -6,14 +6,8 @@
     }
   },
   "rewrites": [
-    {
-      "source": "/api/generate",
-      "destination": "/api/generate"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
-    }
+    { "source": "/api/generate", "destination": "/api/generate" },
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
     {
