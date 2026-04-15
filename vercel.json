@@ -7,6 +7,9 @@
   },
   "rewrites": [
     { "source": "/api/generate", "destination": "/api/generate" },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
+    { "source": "/(.*\\.(css|js|json|png|svg|ico))", "destination": "/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
