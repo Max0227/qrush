@@ -1,0 +1,16 @@
+{
+  "name": "qrush",
+  "version": "1.0.0",
+  "description": "QRush — генератор QR-кодов с аналитикой",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "qrcode": "^1.5.3"
+  },
+  "engines": {
+    "node": ">=18.x"
+  }
+}

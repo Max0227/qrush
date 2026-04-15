@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:,">
+  
+  <!-- SEO мета-теги -->
+  <title>QRush — Генератор QR-кодов с аналитикой | Бесплатно и быстро</title>
+  <meta name="description" content="QRush — современный онлайн-генератор QR-кодов с подробной аналитикой сканирований. Создавай статические и динамические QR-коды за 2 секунды. PNG, SVG, цвета, логотип.">
+  <meta name="keywords" content="QR код, генератор QR, динамический QR, аналитика QR, QRush, создать QR код онлайн, QR code generator">
+  <meta name="author" content="QRush">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#7c3aed">
+  
+  <!-- Open Graph / Соцсети -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://qrush.vercel.app/">
+  <meta property="og:title" content="QRush — Генератор QR-кодов с аналитикой">
+  <meta property="og:description" content="Создавай QR-коды за 2 секунды. Отслеживай каждое сканирование. Бесплатно.">
+  <meta property="og:image" content="https://qrush.vercel.app/og-image.png">
+  
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="QRush — Генератор QR-кодов">
+  <meta name="twitter:description" content="QR-коды с аналитикой за 2 секунды. Бесплатно.">
+  
+  <!-- Канонический URL -->
+  <link rel="canonical" href="https://qrush.vercel.app/">
+  
+  <!-- Шрифты -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <!-- Стили -->
+  <link rel="stylesheet" href="/assets/css/style.css">
+  
+  <!-- Schema.org разметка -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "QRush",
+    "description": "Онлайн-генератор QR-кодов с аналитикой сканирований",
+    "applicationCategory": "UtilityApplication",
+    "operatingSystem": "All",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "ratingCount": "1247"
+    }
+  }
+  </script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+      <a href="/" class="logo">
+        <span class="logo-q">Q</span><span>Rush</span>
+      </a>
+      <nav style="display: flex; gap: 24px;">
+        <a href="#generator" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Генератор</a>
+        <a href="#features" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Возможности</a>
+        <a href="#pricing" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Тарифы</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <h1>QRush. Код, который<br>видит ваш клиент</h1>
+        <p class="hero-subtitle">Создай QR за 2 секунды. Смотри статистику сканирований. Всё в одном окне.</p>
+        <div class="hero-actions">
+          <a href="#generator" class="btn btn-primary">Сгенерировать бесплатно</a>
+          <a href="#pricing" class="btn btn-secondary">Смотреть тарифы</a>
+        </div>
+        
+        <!-- Live Demo -->
+        <div class="demo-preview">
+          <div class="demo-qr">
+            <svg width="150" height="150" viewBox="0 0 100 100" style="background: white;">
+              <rect x="10" y="10" width="30" height="30" fill="black" />
+              <rect x="60" y="10" width="30" height="30" fill="black" />
+              <rect x="10" y="60" width="30" height="30" fill="black" />
+              <rect x="15" y="15" width="20" height="20" fill="white" />
+              <rect x="65" y="15" width="20" height="20" fill="white" />
+              <rect x="15" y="65" width="20" height="20" fill="white" />
+            </svg>
+          </div>
+          <span class="demo-badge">LIVE DEMO — РЕАЛЬНАЯ СИМУЛЯЦИЯ</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Stats Bar -->
+    <section class="stats-bar">
+      <div class="container">
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-value">2.4M+</div>
+            <div class="stat-label">QR создано</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">98ms</div>
+            <div class="stat-label">Среднее время</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">190+</div>
+            <div class="stat-label">Стран мира</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">4.9★</div>
+            <div class="stat-label">Рейтинг</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Возможности</span>
+          <h2>Всё что нужно для<br>умных QR-кодов</h2>
+          <p style="color: var(--text-secondary);">Не просто генерация — полная экосистема для бизнеса и маркетинга</p>
+        </div>
+        
+        <div class="features-grid">
+          <div class="feature-card fade-in">
+            <div class="feature-icon">⚡</div>
+            <h3>Генерация за 2 секунды</h3>
+            <p>Без регистрации. Вставь ссылку — получи готовый QR-код мгновенно. Никаких форм, аккаунтов и ожидания. Просто работает.</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">👁️</div>
+            <h3>Статистика каждого скана</h3>
+            <p>Видишь каждое сканирование в реальном времени: гео, устройство, браузер, час суток. Глубокая аналитика.</p>
+          </div>
+          <div class="feature-card fade-in">
+            <div class="feature-icon">🔗</div>
+            <h3>Динамические коды</h3>
+            <p>QR-код остаётся тем же, а URL внутри меняется. Идеально для меню, рекламы и акций.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Generator Section -->
+    <section id="generator" class="generator-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Генератор</span>
+          <h2>Создай QR прямо здесь и сейчас</h2>
+          <p style="color: var(--text-secondary);">Без регистрации. Без ожидания. Мгновенно.</p>
+        </div>
+        
+        <div class="generator-container">
+          <div class="generator-input-area">
+            <!-- Выбор типа контента -->
+            <div class="input-group">
+              <label>📋 Тип контента</label>
+              <select id="contentType" class="input-field">
+                <option value="url" selected>🔗 Ссылка (URL)</option>
+                <option value="text">📝 Обычный текст</option>
+                <option value="email">📧 Email</option>
+                <option value="phone">📞 Телефон</option>
+                <option value="sms">💬 SMS</option>
+                <option value="wifi">📶 Wi-Fi</option>
+                <option value="vcard">👤 Визитка (vCard)</option>
+                <option value="geo">📍 Геолокация</option>
+                <option value="event">📅 Событие (Календарь)</option>
+              </select>
+            </div>
+
+            <!-- Динамические поля ввода -->
+            <div id="dynamicInputs">
+              <div class="input-group">
+                <label>🔗 URL адрес</label>
+                <input type="text" id="urlInput" class="input-field" placeholder="https://example.com" value="https://qrush.vercel.app">
+              </div>
+            </div>
+
+            <!-- Быстрые шаблоны -->
+            <div class="quick-templates">
+              <button type="button" class="quick-link" data-type="url" data-value="https://instagram.com">📱 Instagram</button>
+              <button type="button" class="quick-link" data-type="url" data-value="https://t.me">📨 Telegram</button>
+              <button type="button" class="quick-link" data-type="wifi" data-value="MyWiFi">📶 Wi-Fi</button>
+              <button type="button" class="quick-link" data-type="vcard" data-value="Demo">👤 Визитка</button>
+            </div>
+            
+            <!-- Цвета -->
+            <div class="color-pickers">
+              <div class="color-picker-group">
+                <label>🎨 Цвет QR</label>
+                <input type="color" id="colorPicker" value="#000000">
+              </div>
+              <div class="color-picker-group">
+                <label>⬜ Цвет фона</label>
+                <input type="color" id="bgColorPicker" value="#FFFFFF">
+              </div>
+            </div>
+            
+            <!-- Размер -->
+            <div class="slider-group">
+              <label>📏 Размер</label>
+              <input type="range" id="sizeSlider" min="200" max="1000" value="400" step="50">
+              <span class="slider-value" id="sizeValue">400px</span>
+            </div>
+            
+            <!-- Динамический режим -->
+            <div class="checkbox-wrapper">
+              <input type="checkbox" id="dynamicToggle">
+              <label for="dynamicToggle">🔄 Сделать код динамическим (можно менять ссылку)</label>
+            </div>
+            
+            <button id="generateBtn" class="btn btn-primary">🚀 Сгенерировать QR</button>
+          </div>
+          
+          <div class="preview-area">
+            <div class="qr-preview" id="preview">
+              <p style="color: var(--text-muted);">Введите данные и нажмите «Сгенерировать»</p>
+            </div>
+
+            <!-- Информация о содержимом QR-кода -->
+            <div class="qr-content-info" id="qrContentInfo">
+              <div class="qr-content-header">
+                <span>📋</span>
+                <span>Содержимое QR-кода:</span>
+              </div>
+              <div id="qrContentText" class="qr-content-text"></div>
+              <div class="qr-content-actions">
+                <button id="copyContentBtn" class="btn-outline">📋 Копировать</button>
+                <button id="openLinkBtn" class="btn-outline" style="display: none;">🔗 Открыть ссылку</button>
+              </div>
+            </div>
+
+            <div class="preview-actions">
+              <button id="downloadPNG" class="btn btn-outline" style="display: none;">📥 PNG</button>
+              <button id="downloadSVG" class="btn btn-outline" style="display: none;">📥 SVG</button>
+              <button id="statsBtn" class="btn btn-outline" style="display: none;">📊 Статистика</button>
+            </div>
+            <p class="preview-note">QR-коды создаются в браузере · Ваши данные не отправляются на сервер</p>
+          </div>
+        </div>
+        
+        <!-- Analytics Container -->
+        <div id="analytics-container"></div>
+      </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="pricing" class="pricing">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Тарифы</span>
+          <h2>Прозрачные цены</h2>
+          <p style="color: var(--text-secondary);">Начни бесплатно. Переходи на PRO когда нужно.</p>
+        </div>
+        
+        <div class="pricing-grid">
+          <div class="pricing-card">
+            <div class="pricing-name">БЕСПЛАТНО</div>
+            <div class="pricing-price">0₽ <small>/мес</small></div>
+            <p style="color: var(--accent-light); margin-bottom: 20px;">БЕСПЛАТНО НАВСЕГДА</p>
+            <ul class="pricing-features">
+              <li>Статичные QR-коды</li>
+              <li>PNG до 1000px</li>
+              <li>1 динамический код (7 дней)</li>
+              <li>Базовая аналитика</li>
+              <li>Цветовая настройка</li>
+              <li>Без регистрации</li>
+            </ul>
+            <a href="#generator" class="btn btn-secondary" style="width: 100%;">Начать бесплатно</a>
+          </div>
+          
+          <div class="pricing-card pro">
+            <div class="pricing-badge">ВЫБОР ПРОФЕССИОНАЛОВ</div>
+            <div class="pricing-name">PRO</div>
+            <div class="pricing-price">7$ <small>/мес</small></div>
+            <p style="color: var(--accent-light); margin-bottom: 20px;">14 ДНЕЙ БЕСПЛАТНО</p>
+            <ul class="pricing-features">
+              <li>Всё из бесплатного</li>
+              <li>Безлимит динамических кодов</li>
+              <li>Векторный SVG</li>
+              <li>Загрузка логотипа в центр</li>
+              <li>Аналитика по странам и часам</li>
+              <li>История сканирований</li>
+              <li>Приоритетная поддержка</li>
+              <li>API доступ</li>
+            </ul>
+            <a href="#" class="btn btn-primary" style="width: 100%;">Попробовать PRO</a>
+          </div>
+        </div>
+        
+        <p class="text-center" style="margin-top: 24px; color: var(--text-muted); font-size: 0.9rem;">🔒 Оплата безопасна · Отмена в любой момент · Поддержка 24/7</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Политика конфиденциальности</a>
+        <a href="#">Условия использования</a>
+        <a href="#">Поддержка</a>
+        <a href="#">API</a>
+      </div>
+      <p>© 2026 QRush. Все права защищены.</p>
+      <p style="margin-top: 16px; font-size: 0.8rem;">Сделано с ❤️ для быстрых QR-кодов</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script>
+    // Проверка загрузки скриптов
+    console.log('🚀 QRush starting...');
+  </script>
+  <script src="/assets/js/qr-generator.js"></script>
+  <script src="/assets/js/analytics.js"></script>
+  <script src="/assets/js/main.js"></script>
+</body>
+</html>
