@@ -1,55 +1,37 @@
 {
   "functions": {
-    "api/*.js": {
+    "api/index.js": {
       "runtime": "@vercel/node@3.0.11",
       "maxDuration": 10,
-      "memory": 1024
+      "memory": 1024,
+      "includeFiles": "**/*"
     }
   },
-  "rewrites": [
+  "routes": [
     {
-      "source": "/q/:code",
-      "destination": "/api/redirect?code=:code"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/api/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type, X-API-Key" }
-      ]
+      "src": "/q/(.*)",
+      "dest": "/api/index?code=$1"
     },
     {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "X-Frame-Options", "value": "DENY" },
-        { "key": "X-XSS-Protection", "value": "1; mode=block" }
-      ]
-    }
-  ],
-  "routes": [
+      "src": "/api/(.*)",
+      "dest": "/api/index"
+    },
     {
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    },
-    {
-      "src": "/q/(.*)",
-      "dest": "/api/redirect?code=$1"
-    },
-    {
-      "src": "/(.*)\\.(html|css|js|json|png|svg|ico|xml|txt)",
-      "dest": "/$1.$2"
-    },
-    {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/api/index"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
     }
   ]
 }
