@@ -1,16 +1,43 @@
 {
   "name": "qrush",
   "version": "1.0.0",
-  "description": "QRush — генератор QR-кодов с аналитикой",
+  "description": "QRush — современный генератор QR-кодов с аналитикой сканирований",
   "main": "index.html",
+  "type": "commonjs",
+  "homepage": "https://qrush.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Max0227/qrush"
+  },
+  "keywords": [
+    "qr-code",
+    "generator",
+    "analytics",
+    "qrush",
+    "qr",
+    "barcode",
+    "动态二维码",
+    "二维码生成器"
+  ],
+  "author": "QRush Team",
+  "license": "MIT",
   "scripts": {
     "dev": "node server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "build": "echo 'No build step required'",
+    "vercel-build": "echo 'Vercel build complete'"
   },
   "dependencies": {
     "qrcode": "^1.5.3"
   },
+  "devDependencies": {},
   "engines": {
-    "node": ">=18.x"
-  }
+    "node": ">=18.x",
+    "npm": ">=9.x"
+  },
+  "browserslist": [
+    "> 0.5%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
