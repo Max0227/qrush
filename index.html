@@ -2,18 +2,22 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes, viewport-fit=cover">
   
   <!-- Favicon -->
   <link rel="icon" href="data:,">
   
   <!-- SEO мета-теги -->
-  <title>QRush — Генератор QR-кодов с аналитикой | Бесплатно и быстро</title>
-  <meta name="description" content="QRush — современный онлайн-генератор QR-кодов с подробной аналитикой сканирований. Создавай статические и динамические QR-коды за 2 секунды. PNG, SVG, цвета, логотип.">
-  <meta name="keywords" content="QR код, генератор QR, динамический QR, аналитика QR, QRush, создать QR код онлайн, QR code generator">
+  <title>QRush — Генератор QR-кодов с аналитикой | Бесплатно</title>
+  <meta name="description" content="QRush — лучший онлайн-генератор QR-кодов с геоаналитикой. Создавай динамические QR-коды за 2 секунды. PNG, SVG, цвета, логотип. Отслеживай каждое сканирование.">
+  <meta name="keywords" content="QR код, генератор QR, динамический QR, аналитика QR, QRush, создать QR код онлайн, QR code generator, qr код с аналитикой, бесплатный qr код">
   <meta name="author" content="QRush">
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#7c3aed">
+  <meta name="geo.region" content="RU">
+  <meta name="geo.placename" content="Россия">
+  <meta name="geo.position" content="55.7558;37.6173">
+  <meta name="ICBM" content="55.7558, 37.6173">
   
   <!-- Open Graph / Соцсети -->
   <meta property="og:type" content="website">
@@ -21,6 +25,7 @@
   <meta property="og:title" content="QRush — Генератор QR-кодов с аналитикой">
   <meta property="og:description" content="Создавай QR-коды за 2 секунды. Отслеживай каждое сканирование. Бесплатно.">
   <meta property="og:image" content="https://qrush.vercel.app/og-image.png">
+  <meta property="og:locale" content="ru_RU">
   
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
@@ -33,7 +38,7 @@
   <!-- Шрифты -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Стили -->
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -50,7 +55,7 @@
     "offers": {
       "@type": "Offer",
       "price": "0",
-      "priceCurrency": "USD"
+      "priceCurrency": "RUB"
     },
     "aggregateRating": {
       "@type": "AggregateRating",
@@ -61,17 +66,36 @@
   </script>
 </head>
 <body>
+  <!-- Анимированный фон -->
+  <div class="bg-gradient"></div>
+  <div class="bg-grid"></div>
+  
   <!-- Header -->
   <header class="header">
-    <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+    <div class="container">
       <a href="/" class="logo">
-        <span class="logo-q">Q</span><span>Rush</span>
+        <span class="logo-q">Q</span>
+        <span>Rush</span>
+        <span class="logo-badge">BETA</span>
       </a>
-      <nav style="display: flex; gap: 24px;">
-        <a href="#generator" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Генератор</a>
-        <a href="#features" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Возможности</a>
-        <a href="#pricing" class="nav-link" style="color: var(--text-secondary); text-decoration: none;">Тарифы</a>
+      <nav class="nav-desktop">
+        <a href="#generator" class="nav-link">Генератор</a>
+        <a href="#features" class="nav-link">Возможности</a>
+        <a href="#pricing" class="nav-link">Тарифы</a>
+        <a href="#faq" class="nav-link">FAQ</a>
       </nav>
+      <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Меню">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <!-- Мобильное меню -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#generator" class="mobile-nav-link">Генератор</a>
+      <a href="#features" class="mobile-nav-link">Возможности</a>
+      <a href="#pricing" class="mobile-nav-link">Тарифы</a>
+      <a href="#faq" class="mobile-nav-link">FAQ</a>
     </div>
   </header>
 
@@ -79,26 +103,45 @@
     <!-- Hero Section -->
     <section class="hero">
       <div class="container">
-        <h1>QRush. Код, который<br>видит ваш клиент</h1>
-        <p class="hero-subtitle">Создай QR за 2 секунды. Смотри статистику сканирований. Всё в одном окне.</p>
+        <div class="hero-badge">
+          <span class="pulse-dot"></span>
+          НОВОЕ: Геоаналитика сканирований
+        </div>
+        <h1 class="hero-title">
+          <span class="gradient-text">QRush.</span>
+          <br>
+          <span class="hero-title-line2">Код, который работает</span>
+        </h1>
+        <p class="hero-subtitle">Создай динамический QR за 2 секунды. Отслеживай географию, устройства и время сканирований. Всё бесплатно.</p>
         <div class="hero-actions">
-          <a href="#generator" class="btn btn-primary">Сгенерировать бесплатно</a>
-          <a href="#pricing" class="btn btn-secondary">Смотреть тарифы</a>
+          <a href="#generator" class="btn btn-primary btn-large">
+            🚀 Сгенерировать бесплатно
+            <span class="btn-glow"></span>
+          </a>
+          <a href="#features" class="btn btn-secondary btn-large">
+            Узнать больше
+          </a>
         </div>
         
         <!-- Live Demo -->
         <div class="demo-preview">
-          <div class="demo-qr">
-            <svg width="150" height="150" viewBox="0 0 100 100" style="background: white;">
-              <rect x="10" y="10" width="30" height="30" fill="black" />
-              <rect x="60" y="10" width="30" height="30" fill="black" />
-              <rect x="10" y="60" width="30" height="30" fill="black" />
-              <rect x="15" y="15" width="20" height="20" fill="white" />
-              <rect x="65" y="15" width="20" height="20" fill="white" />
-              <rect x="15" y="65" width="20" height="20" fill="white" />
-            </svg>
+          <div class="demo-qr-wrapper">
+            <div class="demo-qr">
+              <svg width="160" height="160" viewBox="0 0 100 100" style="background: white;">
+                <rect x="10" y="10" width="30" height="30" fill="black" />
+                <rect x="60" y="10" width="30" height="30" fill="black" />
+                <rect x="10" y="60" width="30" height="30" fill="black" />
+                <rect x="15" y="15" width="20" height="20" fill="white" />
+                <rect x="65" y="15" width="20" height="20" fill="white" />
+                <rect x="15" y="65" width="20" height="20" fill="white" />
+              </svg>
+              <div class="demo-qr-scan-line"></div>
+            </div>
           </div>
-          <span class="demo-badge">LIVE DEMO — РЕАЛЬНАЯ СИМУЛЯЦИЯ</span>
+          <div class="demo-info">
+            <span class="demo-badge">LIVE DEMO</span>
+            <p class="demo-text">Отсканируйте камерой — увидите магию ✨</p>
+          </div>
         </div>
       </div>
     </section>
@@ -108,19 +151,19 @@
       <div class="container">
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="stat-value">2.4M+</div>
+            <div class="stat-value"><span class="stat-number" data-target="2.4">0</span>M+</div>
             <div class="stat-label">QR создано</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">98ms</div>
+            <div class="stat-value"><span class="stat-number" data-target="98">0</span>ms</div>
             <div class="stat-label">Среднее время</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">190+</div>
+            <div class="stat-value"><span class="stat-number" data-target="190">0</span>+</div>
             <div class="stat-label">Стран мира</div>
           </div>
           <div class="stat-item">
-            <div class="stat-value">4.9★</div>
+            <div class="stat-value"><span class="stat-number" data-target="4.9">0</span>★</div>
             <div class="stat-label">Рейтинг</div>
           </div>
         </div>
@@ -131,26 +174,59 @@
     <section id="features" class="features">
       <div class="container">
         <div class="section-header">
-          <span class="section-subtitle">Возможности</span>
-          <h2>Всё что нужно для<br>умных QR-кодов</h2>
-          <p style="color: var(--text-secondary);">Не просто генерация — полная экосистема для бизнеса и маркетинга</p>
+          <span class="section-subtitle">⚡ Возможности</span>
+          <h2>Всё что нужно для<br><span class="gradient-text">умных QR-кодов</span></h2>
+          <p class="section-description">Не просто генерация — полная экосистема для бизнеса и маркетинга</p>
         </div>
         
         <div class="features-grid">
-          <div class="feature-card fade-in">
-            <div class="feature-icon">⚡</div>
-            <h3>Генерация за 2 секунды</h3>
-            <p>Без регистрации. Вставь ссылку — получи готовый QR-код мгновенно. Никаких форм, аккаунтов и ожидания. Просто работает.</p>
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">⚡</span>
+            </div>
+            <h3>Мгновенная генерация</h3>
+            <p>Вставь ссылку — получи готовый QR-код за 2 секунды. Без регистрации, без ожидания.</p>
+            <span class="feature-badge">~98ms</span>
           </div>
-          <div class="feature-card fade-in">
-            <div class="feature-icon">👁️</div>
-            <h3>Статистика каждого скана</h3>
-            <p>Видишь каждое сканирование в реальном времени: гео, устройство, браузер, час суток. Глубокая аналитика.</p>
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🌍</span>
+            </div>
+            <h3>Геоаналитика</h3>
+            <p>Отслеживай страну, город и регион каждого сканирования в реальном времени.</p>
+            <span class="feature-badge">190+ стран</span>
           </div>
-          <div class="feature-card fade-in">
-            <div class="feature-icon">🔗</div>
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">📊</span>
+            </div>
+            <h3>Детальная статистика</h3>
+            <p>Устройства, браузеры, время суток, UTM-метки — полный анализ аудитории.</p>
+            <span class="feature-badge">24/7</span>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🔄</span>
+            </div>
             <h3>Динамические коды</h3>
-            <p>QR-код остаётся тем же, а URL внутри меняется. Идеально для меню, рекламы и акций.</p>
+            <p>Меняй ссылку в любое время. QR-код остаётся прежним, а контент обновляется.</p>
+            <span class="feature-badge">∞ редиректов</span>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">🎨</span>
+            </div>
+            <h3>Кастомизация</h3>
+            <p>Цвета, градиенты, логотип, рамки, стили углов — создай уникальный дизайн.</p>
+            <span class="feature-badge">12+ пресетов</span>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon-wrapper">
+              <span class="feature-icon">📱</span>
+            </div>
+            <h3>Все форматы</h3>
+            <p>PNG, SVG, вектор — скачай в любом формате. Идеально для печати и веба.</p>
+            <span class="feature-badge">PNG + SVG</span>
           </div>
         </div>
       </div>
@@ -160,16 +236,19 @@
     <section id="generator" class="generator-section">
       <div class="container">
         <div class="section-header">
-          <span class="section-subtitle">Генератор</span>
-          <h2>Создай QR прямо здесь и сейчас</h2>
-          <p style="color: var(--text-secondary);">Без регистрации. Без ожидания. Мгновенно.</p>
+          <span class="section-subtitle">🎯 Генератор</span>
+          <h2>Создай QR <span class="gradient-text">прямо сейчас</span></h2>
+          <p class="section-description">Без регистрации. Без ограничений. Мгновенно.</p>
         </div>
         
         <div class="generator-container">
           <div class="generator-input-area">
             <!-- Выбор типа контента -->
             <div class="input-group">
-              <label>📋 Тип контента</label>
+              <label>
+                <span class="label-icon">📋</span>
+                Тип контента
+              </label>
               <select id="contentType" class="input-field">
                 <option value="url" selected>🔗 Ссылка (URL)</option>
                 <option value="text">📝 Обычный текст</option>
@@ -186,71 +265,134 @@
             <!-- Динамические поля ввода -->
             <div id="dynamicInputs">
               <div class="input-group">
-                <label>🔗 URL адрес</label>
+                <label>
+                  <span class="label-icon">🔗</span>
+                  URL адрес
+                </label>
                 <input type="text" id="urlInput" class="input-field" placeholder="https://example.com" value="https://qrush.vercel.app">
               </div>
             </div>
 
             <!-- Быстрые шаблоны -->
-            <div class="quick-templates">
-              <button type="button" class="quick-link" data-type="url" data-value="https://instagram.com">📱 Instagram</button>
-              <button type="button" class="quick-link" data-type="url" data-value="https://t.me">📨 Telegram</button>
-              <button type="button" class="quick-link" data-type="wifi" data-value="MyWiFi">📶 Wi-Fi</button>
-              <button type="button" class="quick-link" data-type="vcard" data-value="Demo">👤 Визитка</button>
+            <div class="quick-templates-wrapper">
+              <label class="quick-templates-label">Быстрые шаблоны:</label>
+              <div class="quick-templates">
+                <button type="button" class="quick-link" data-type="url" data-value="https://instagram.com">
+                  <span class="quick-link-icon">📷</span> Instagram
+                </button>
+                <button type="button" class="quick-link" data-type="url" data-value="https://t.me">
+                  <span class="quick-link-icon">📨</span> Telegram
+                </button>
+                <button type="button" class="quick-link" data-type="wifi" data-value="MyWiFi">
+                  <span class="quick-link-icon">📶</span> Wi-Fi
+                </button>
+                <button type="button" class="quick-link" data-type="vcard" data-value="Demo">
+                  <span class="quick-link-icon">👤</span> Визитка
+                </button>
+              </div>
+            </div>
+            
+            <!-- Пресеты -->
+            <div class="presets-wrapper">
+              <label class="presets-label">🎨 Пресеты дизайна:</label>
+              <div class="presets-grid" id="presetsGrid">
+                <!-- Заполняется через JS -->
+              </div>
             </div>
             
             <!-- Цвета -->
             <div class="color-pickers">
               <div class="color-picker-group">
-                <label>🎨 Цвет QR</label>
-                <input type="color" id="colorPicker" value="#000000">
+                <label>
+                  <span class="label-icon">🎨</span>
+                  Цвет QR
+                </label>
+                <div class="color-input-wrapper">
+                  <input type="color" id="colorPicker" value="#7c3aed">
+                  <span class="color-value" id="colorValue">#7c3aed</span>
+                </div>
               </div>
               <div class="color-picker-group">
-                <label>⬜ Цвет фона</label>
-                <input type="color" id="bgColorPicker" value="#FFFFFF">
+                <label>
+                  <span class="label-icon">⬜</span>
+                  Цвет фона
+                </label>
+                <div class="color-input-wrapper">
+                  <input type="color" id="bgColorPicker" value="#FFFFFF">
+                  <span class="color-value" id="bgColorValue">#FFFFFF</span>
+                </div>
               </div>
             </div>
             
             <!-- Размер -->
             <div class="slider-group">
-              <label>📏 Размер</label>
+              <label>
+                <span class="label-icon">📏</span>
+                Размер: <span id="sizeValue">400</span>px
+              </label>
               <input type="range" id="sizeSlider" min="200" max="1000" value="400" step="50">
-              <span class="slider-value" id="sizeValue">400px</span>
             </div>
             
-            <!-- Динамический режим -->
-            <div class="checkbox-wrapper">
-              <input type="checkbox" id="dynamicToggle">
-              <label for="dynamicToggle">🔄 Сделать код динамическим (можно менять ссылку)</label>
+            <!-- Опции -->
+            <div class="options-group">
+              <div class="checkbox-wrapper">
+                <input type="checkbox" id="dynamicToggle">
+                <label for="dynamicToggle">🔄 Динамический код (можно менять ссылку)</label>
+              </div>
+              <div class="checkbox-wrapper">
+                <input type="checkbox" id="gradientToggle">
+                <label for="gradientToggle">🌈 Градиентный QR</label>
+              </div>
             </div>
             
-            <button id="generateBtn" class="btn btn-primary">🚀 Сгенерировать QR</button>
+            <button id="generateBtn" class="btn btn-primary btn-generate">
+              <span class="btn-text">🚀 Сгенерировать QR</span>
+              <span class="btn-loading" style="display: none;">
+                <span class="spinner"></span> Генерация...
+              </span>
+            </button>
           </div>
           
           <div class="preview-area">
+            <div class="preview-header">
+              <span>👁️ Превью</span>
+              <span class="preview-badge">PNG / SVG</span>
+            </div>
             <div class="qr-preview" id="preview">
-              <p style="color: var(--text-muted);">Введите данные и нажмите «Сгенерировать»</p>
+              <div class="preview-placeholder">
+                <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+                  <rect x="20" y="20" width="25" height="25" rx="4" fill="var(--border-color)" opacity="0.3" />
+                  <rect x="55" y="20" width="25" height="25" rx="4" fill="var(--border-color)" opacity="0.3" />
+                  <rect x="20" y="55" width="25" height="25" rx="4" fill="var(--border-color)" opacity="0.3" />
+                </svg>
+                <p>Введите данные и нажмите «Сгенерировать»</p>
+              </div>
             </div>
 
-            <!-- Информация о содержимом QR-кода -->
-            <div class="qr-content-info" id="qrContentInfo">
+            <!-- Информация о содержимом -->
+            <div class="qr-content-info" id="qrContentInfo" style="display: none;">
               <div class="qr-content-header">
-                <span>📋</span>
-                <span>Содержимое QR-кода:</span>
+                <span>📋 Содержимое:</span>
+                <button class="btn-icon-small" id="copyContentBtn" title="Копировать">📋</button>
               </div>
               <div id="qrContentText" class="qr-content-text"></div>
-              <div class="qr-content-actions">
-                <button id="copyContentBtn" class="btn-outline">📋 Копировать</button>
-                <button id="openLinkBtn" class="btn-outline" style="display: none;">🔗 Открыть ссылку</button>
+              <div class="qr-content-footer">
+                <button id="openLinkBtn" class="btn-link" style="display: none;">🔗 Открыть ссылку</button>
               </div>
             </div>
 
             <div class="preview-actions">
-              <button id="downloadPNG" class="btn btn-outline" style="display: none;">📥 PNG</button>
-              <button id="downloadSVG" class="btn btn-outline" style="display: none;">📥 SVG</button>
-              <button id="statsBtn" class="btn btn-outline" style="display: none;">📊 Статистика</button>
+              <button id="downloadPNG" class="btn btn-outline" style="display: none;">
+                <span>📥</span> PNG
+              </button>
+              <button id="downloadSVG" class="btn btn-outline" style="display: none;">
+                <span>📥</span> SVG
+              </button>
+              <button id="statsBtn" class="btn btn-outline" style="display: none;">
+                <span>📊</span> Статистика
+              </button>
             </div>
-            <p class="preview-note">QR-коды создаются в браузере · Ваши данные не отправляются на сервер</p>
+            <p class="preview-note">QR-коды создаются локально · Данные не покидают браузер</p>
           </div>
         </div>
         
@@ -263,47 +405,127 @@
     <section id="pricing" class="pricing">
       <div class="container">
         <div class="section-header">
-          <span class="section-subtitle">Тарифы</span>
-          <h2>Прозрачные цены</h2>
-          <p style="color: var(--text-secondary);">Начни бесплатно. Переходи на PRO когда нужно.</p>
+          <span class="section-subtitle">💰 Тарифы</span>
+          <h2>Прозрачные цены <span class="gradient-text">в рублях</span></h2>
+          <p class="section-description">Начни бесплатно. Переходи на PRO когда нужно.</p>
+        </div>
+        
+        <div class="pricing-toggle-wrapper">
+          <span class="pricing-toggle-label">Месяц</span>
+          <label class="pricing-toggle">
+            <input type="checkbox" id="pricingToggle">
+            <span class="toggle-slider"></span>
+          </label>
+          <span class="pricing-toggle-label">
+            Год
+            <span class="save-badge">-20%</span>
+          </span>
         </div>
         
         <div class="pricing-grid">
           <div class="pricing-card">
-            <div class="pricing-name">БЕСПЛАТНО</div>
-            <div class="pricing-price">0₽ <small>/мес</small></div>
-            <p style="color: var(--accent-light); margin-bottom: 20px;">БЕСПЛАТНО НАВСЕГДА</p>
+            <div class="pricing-card-header">
+              <span class="pricing-icon">🆓</span>
+              <div class="pricing-name">БЕСПЛАТНО</div>
+            </div>
+            <div class="pricing-price">
+              0 ₽
+              <small>навсегда</small>
+            </div>
+            <p class="pricing-description">Всё необходимое для старта</p>
             <ul class="pricing-features">
-              <li>Статичные QR-коды</li>
-              <li>PNG до 1000px</li>
-              <li>1 динамический код (7 дней)</li>
-              <li>Базовая аналитика</li>
-              <li>Цветовая настройка</li>
-              <li>Без регистрации</li>
+              <li>✅ Статичные QR-коды</li>
+              <li>✅ PNG до 1000px</li>
+              <li>✅ 1 динамический код (7 дней)</li>
+              <li>✅ Базовая аналитика</li>
+              <li>✅ Настройка цветов</li>
+              <li>✅ Без регистрации</li>
             </ul>
-            <a href="#generator" class="btn btn-secondary" style="width: 100%;">Начать бесплатно</a>
+            <a href="#generator" class="btn btn-secondary btn-pricing">Начать бесплатно</a>
           </div>
           
           <div class="pricing-card pro">
-            <div class="pricing-badge">ВЫБОР ПРОФЕССИОНАЛОВ</div>
-            <div class="pricing-name">PRO</div>
-            <div class="pricing-price">7$ <small>/мес</small></div>
-            <p style="color: var(--accent-light); margin-bottom: 20px;">14 ДНЕЙ БЕСПЛАТНО</p>
+            <div class="pricing-badge">🔥 ВЫБОР ПРОФИ</div>
+            <div class="pricing-card-header">
+              <span class="pricing-icon">💎</span>
+              <div class="pricing-name">PRO</div>
+            </div>
+            <div class="pricing-price">
+              <span class="monthly-price">199 ₽</span>
+              <span class="yearly-price" style="display: none;">159 ₽</span>
+              <small>/мес</small>
+            </div>
+            <p class="pricing-description">Для бизнеса и профессионалов</p>
             <ul class="pricing-features">
-              <li>Всё из бесплатного</li>
-              <li>Безлимит динамических кодов</li>
-              <li>Векторный SVG</li>
-              <li>Загрузка логотипа в центр</li>
-              <li>Аналитика по странам и часам</li>
-              <li>История сканирований</li>
-              <li>Приоритетная поддержка</li>
-              <li>API доступ</li>
+              <li>✅ Всё из бесплатного</li>
+              <li>✅ Безлимит динамических кодов</li>
+              <li>✅ Векторный SVG</li>
+              <li>✅ Загрузка логотипа</li>
+              <li>✅ Геоаналитика по странам</li>
+              <li>✅ История сканирований</li>
+              <li>✅ Приоритетная поддержка</li>
+              <li>✅ API доступ</li>
             </ul>
-            <a href="#" class="btn btn-primary" style="width: 100%;">Попробовать PRO</a>
+            <a href="#" class="btn btn-primary btn-pricing">Попробовать 14 дней</a>
           </div>
         </div>
         
-        <p class="text-center" style="margin-top: 24px; color: var(--text-muted); font-size: 0.9rem;">🔒 Оплата безопасна · Отмена в любой момент · Поддержка 24/7</p>
+        <div class="pricing-guarantee">
+          <span>🔒 Оплата безопасна</span>
+          <span class="dot">·</span>
+          <span>Отмена в любой момент</span>
+          <span class="dot">·</span>
+          <span>Поддержка 24/7</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">❓ Вопросы</span>
+          <h2>Часто <span class="gradient-text">спрашивают</span></h2>
+        </div>
+        
+        <div class="faq-grid">
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Что такое динамический QR-код?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              Динамический QR-код содержит короткую ссылку-редирект. Вы можете менять конечный URL в любое время, а сам QR-код остаётся неизменным.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Как работает геоаналитика?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              При каждом сканировании мы определяем страну, город и регион по IP-адресу. Данные отображаются в реальном времени в личном кабинете.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>Можно ли добавить логотип?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              Да, в тарифе PRO доступна загрузка логотипа в центр QR-кода. Поддерживаются форматы PNG, JPG, SVG.
+            </div>
+          </div>
+          <div class="faq-item">
+            <div class="faq-question">
+              <span>QR-коды работают вечно?</span>
+              <span class="faq-icon">+</span>
+            </div>
+            <div class="faq-answer">
+              Статические QR-коды работают вечно. Динамические коды активны пока действует подписка. В бесплатном тарифе — 7 дней.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </main>
@@ -311,24 +533,183 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-links">
-        <a href="#">Политика конфиденциальности</a>
-        <a href="#">Условия использования</a>
-        <a href="#">Поддержка</a>
-        <a href="#">API</a>
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="/" class="logo">
+            <span class="logo-q">Q</span><span>Rush</span>
+          </a>
+          <p class="footer-tagline">QR-коды нового поколения с аналитикой</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Telegram">📨</a>
+            <a href="#" aria-label="VK">🟦</a>
+            <a href="#" aria-label="YouTube">▶️</a>
+          </div>
+        </div>
+        <div class="footer-links-group">
+          <h4>Продукт</h4>
+          <a href="#generator">Генератор</a>
+          <a href="#features">Возможности</a>
+          <a href="#pricing">Тарифы</a>
+          <a href="#faq">FAQ</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Компания</h4>
+          <a href="#">О нас</a>
+          <a href="#">Блог</a>
+          <a href="#">Контакты</a>
+        </div>
+        <div class="footer-links-group">
+          <h4>Правовая информация</h4>
+          <a href="#">Политика конфиденциальности</a>
+          <a href="#">Условия использования</a>
+          <a href="#">Cookie</a>
+        </div>
       </div>
-      <p>© 2026 QRush. Все права защищены.</p>
-      <p style="margin-top: 16px; font-size: 0.8rem;">Сделано с ❤️ для быстрых QR-кодов</p>
+      <div class="footer-bottom">
+        <p>© 2026 QRush. Все права защищены.</p>
+        <p class="footer-made">Сделано с ❤️ в России</p>
+      </div>
     </div>
   </footer>
 
   <!-- Scripts -->
-  <script>
-    // Проверка загрузки скриптов
-    console.log('🚀 QRush starting...');
-  </script>
   <script src="/assets/js/qr-generator.js"></script>
   <script src="/assets/js/analytics.js"></script>
+  <script>
+    // Инициализация мобильного меню
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('🚀 QRush загружен');
+      
+      // Мобильное меню
+      const menuBtn = document.getElementById('mobileMenuBtn');
+      const mobileMenu = document.getElementById('mobileMenu');
+      
+      if (menuBtn && mobileMenu) {
+        menuBtn.addEventListener('click', () => {
+          menuBtn.classList.toggle('active');
+          mobileMenu.classList.toggle('active');
+        });
+        
+        document.querySelectorAll('.mobile-nav-link').forEach(link => {
+          link.addEventListener('click', () => {
+            menuBtn.classList.remove('active');
+            mobileMenu.classList.remove('active');
+          });
+        });
+      }
+      
+      // FAQ аккордеон
+      document.querySelectorAll('.faq-question').forEach(question => {
+        question.addEventListener('click', () => {
+          const faqItem = question.closest('.faq-item');
+          faqItem.classList.toggle('active');
+        });
+      });
+      
+      // Переключатель цен (месяц/год)
+      const pricingToggle = document.getElementById('pricingToggle');
+      const monthlyPrice = document.querySelector('.monthly-price');
+      const yearlyPrice = document.querySelector('.yearly-price');
+      
+      if (pricingToggle) {
+        pricingToggle.addEventListener('change', (e) => {
+          if (e.target.checked) {
+            monthlyPrice.style.display = 'none';
+            yearlyPrice.style.display = 'inline';
+          } else {
+            monthlyPrice.style.display = 'inline';
+            yearlyPrice.style.display = 'none';
+          }
+        });
+      }
+      
+      // Анимация цифр в статах
+      const animateNumbers = () => {
+        document.querySelectorAll('.stat-number').forEach(el => {
+          const target = parseFloat(el.dataset.target);
+          const isDecimal = el.dataset.target.includes('.');
+          let current = 0;
+          const step = target / 50;
+          
+          const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+              el.textContent = isDecimal ? target.toFixed(1) : Math.round(target);
+              clearInterval(timer);
+            } else {
+              el.textContent = isDecimal ? current.toFixed(1) : Math.round(current);
+            }
+          }, 20);
+        });
+      };
+      
+      // Запуск анимации при скролле
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateNumbers();
+            observer.disconnect();
+          }
+        });
+      });
+      
+      const statsBar = document.querySelector('.stats-bar');
+      if (statsBar) observer.observe(statsBar);
+      
+      // Обновление значения цвета
+      const colorPicker = document.getElementById('colorPicker');
+      const colorValue = document.getElementById('colorValue');
+      if (colorPicker && colorValue) {
+        colorPicker.addEventListener('input', (e) => {
+          colorValue.textContent = e.target.value.toUpperCase();
+        });
+      }
+      
+      const bgColorPicker = document.getElementById('bgColorPicker');
+      const bgColorValue = document.getElementById('bgColorValue');
+      if (bgColorPicker && bgColorValue) {
+        bgColorPicker.addEventListener('input', (e) => {
+          bgColorValue.textContent = e.target.value.toUpperCase();
+        });
+      }
+      
+      // Обновление значения размера
+      const sizeSlider = document.getElementById('sizeSlider');
+      const sizeValue = document.getElementById('sizeValue');
+      if (sizeSlider && sizeValue) {
+        sizeSlider.addEventListener('input', (e) => {
+          sizeValue.textContent = e.target.value;
+        });
+      }
+      
+      // Рендер пресетов
+      if (window.qrush?.generator) {
+        const presetsGrid = document.getElementById('presetsGrid');
+        if (presetsGrid) {
+          const presets = window.qrush.generator.getPresets();
+          presets.slice(0, 6).forEach(preset => {
+            const btn = document.createElement('button');
+            btn.className = 'preset-btn';
+            btn.innerHTML = `<span>${preset.icon}</span><span>${preset.name}</span>`;
+            btn.style.cssText = `--preset-color: ${preset.color}; --preset-bg: ${preset.bgColor}`;
+            btn.addEventListener('click', () => {
+              const settings = window.qrush.generator.applyPreset(preset.id);
+              if (settings) {
+                document.getElementById('colorPicker').value = settings.color;
+                document.getElementById('colorValue').textContent = settings.color.toUpperCase();
+                document.getElementById('bgColorPicker').value = settings.bgColor;
+                document.getElementById('bgColorValue').textContent = settings.bgColor.toUpperCase();
+                if (settings.gradient) {
+                  document.getElementById('gradientToggle').checked = true;
+                }
+              }
+            });
+            presetsGrid.appendChild(btn);
+          });
+        }
+      }
+    });
+  </script>
   <script src="/assets/js/main.js"></script>
 </body>
 </html>

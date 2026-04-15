@@ -1,7 +1,9 @@
-// assets/js/qr-generator.js — Продвинутый генератор QR (Production Ready)
+// assets/js/qr-generator.js — QRush Generator (Production Ready + Vercel Fix)
+// Version: 2.0.0
 
 class QRGenerator {
   constructor() {
+    // API эндпоинты (исправлены для Vercel)
     this.apiUrl = '/api/generate';
     this.saveApiUrl = '/api/save-dynamic';
     
@@ -11,6 +13,7 @@ class QRGenerator {
     this.currentDynamicId = null;
     this.currentContent = null;
     this.currentSettings = null;
+    this.isGenerating = false;
     
     // История генераций
     this.history = this.loadHistory();
@@ -19,20 +22,22 @@ class QRGenerator {
     // Избранное
     this.favorites = this.loadFavorites();
     
-    // Пресеты
+    // Пресеты (улучшенные)
     this.presets = {
-      instagram: { color: '#E1306C', bgColor: '#FFFFFF', eyeStyle: 'rounded', gradient: true, gradientColors: ['#E1306C', '#F77737', '#FCAF45'] },
-      facebook: { color: '#1877F2', bgColor: '#FFFFFF', eyeStyle: 'circle' },
-      linkedin: { color: '#0A66C2', bgColor: '#FFFFFF', eyeStyle: 'square' },
-      whatsapp: { color: '#25D366', bgColor: '#FFFFFF', eyeStyle: 'rounded' },
-      telegram: { color: '#26A5E4', bgColor: '#FFFFFF', eyeStyle: 'circle' },
-      tiktok: { color: '#000000', bgColor: '#FFFFFF', eyeStyle: 'square', gradient: true, gradientColors: ['#00F2EA', '#FF0050'] },
-      spotify: { color: '#1DB954', bgColor: '#191414', eyeStyle: 'circle' },
-      youtube: { color: '#FF0000', bgColor: '#FFFFFF', eyeStyle: 'rounded' },
-      premium: { color: '#7c3aed', bgColor: '#0A0A0F', eyeStyle: 'diamond', gradient: true, gradientColors: ['#7c3aed', '#a855f7', '#ec4899'] },
-      neon: { color: '#00ff88', bgColor: '#0a0a0a', eyeStyle: 'rounded', gradient: true, gradientColors: ['#00ff88', '#00ccff'] },
-      minimal: { color: '#000000', bgColor: '#FFFFFF', eyeStyle: 'square', margin: 4 },
-      retro: { color: '#8B4513', bgColor: '#F5DEB3', eyeStyle: 'square', margin: 6 }
+      instagram: { color: '#E1306C', bgColor: '#FFFFFF', eyeStyle: 'rounded', gradient: true, gradientColors: ['#E1306C', '#F77737', '#FCAF45'], icon: '📷', name: 'Instagram' },
+      facebook: { color: '#1877F2', bgColor: '#FFFFFF', eyeStyle: 'circle', icon: '👤', name: 'Facebook' },
+      linkedin: { color: '#0A66C2', bgColor: '#FFFFFF', eyeStyle: 'square', icon: '💼', name: 'LinkedIn' },
+      whatsapp: { color: '#25D366', bgColor: '#FFFFFF', eyeStyle: 'rounded', icon: '💬', name: 'WhatsApp' },
+      telegram: { color: '#26A5E4', bgColor: '#FFFFFF', eyeStyle: 'circle', icon: '📨', name: 'Telegram' },
+      tiktok: { color: '#000000', bgColor: '#FFFFFF', eyeStyle: 'square', gradient: true, gradientColors: ['#00F2EA', '#FF0050'], icon: '🎵', name: 'TikTok' },
+      spotify: { color: '#1DB954', bgColor: '#191414', eyeStyle: 'circle', icon: '🎵', name: 'Spotify' },
+      youtube: { color: '#FF0000', bgColor: '#FFFFFF', eyeStyle: 'rounded', icon: '▶️', name: 'YouTube' },
+      premium: { color: '#7c3aed', bgColor: '#0A0A0F', eyeStyle: 'diamond', gradient: true, gradientColors: ['#7c3aed', '#a855f7', '#ec4899'], icon: '💎', name: 'Premium' },
+      neon: { color: '#00ff88', bgColor: '#0a0a0a', eyeStyle: 'rounded', gradient: true, gradientColors: ['#00ff88', '#00ccff'], icon: '✨', name: 'Neon' },
+      minimal: { color: '#000000', bgColor: '#FFFFFF', eyeStyle: 'square', margin: 4, icon: '⚫', name: 'Minimal' },
+      retro: { color: '#8B4513', bgColor: '#F5DEB3', eyeStyle: 'square', margin: 6, icon: '📻', name: 'Retro' },
+      business: { color: '#1a1a2e', bgColor: '#FFFFFF', eyeStyle: 'square', icon: '🏢', name: 'Business' },
+      eco: { color: '#2e7d32', bgColor: '#e8f5e9', eyeStyle: 'rounded', icon: '🌿', name: 'Eco' }
     };
     
     // Настройки по умолчанию
@@ -60,44 +65,61 @@ class QRGenerator {
     // Очередь генерации
     this.queue = [];
     this.isProcessing = false;
+    
+    // Кэш для SEO подсказок
+    this.seoKeywords = this.loadSEOKeywords();
   }
 
   // ============================================
-  // 🎯 ОСНОВНАЯ ГЕНЕРАЦИЯ
+  // 🎯 ОСНОВНАЯ ГЕНЕРАЦИЯ (ИСПРАВЛЕНО)
   // ============================================
   async generate(content, options = {}) {
     const startTime = performance.now();
-    const requestOptions = { ...this.defaultSettings, ...options };
     
     // Валидация контента
     if (!content || typeof content !== 'string') {
-      throw new Error('Content is required and must be a string');
+      throw new Error('Введите текст или ссылку для генерации QR-кода');
     }
+    
+    // Очистка контента
+    content = content.trim();
     
     // Сохраняем контент
     this.currentContent = content;
+    
+    // Объединяем настройки
+    const requestOptions = { ...this.defaultSettings, ...options };
     this.currentSettings = requestOptions;
     
     // Применяем пресет если указан
     if (requestOptions.preset && this.presets[requestOptions.preset]) {
-      Object.assign(requestOptions, this.presets[requestOptions.preset]);
+      const preset = this.presets[requestOptions.preset];
+      Object.keys(preset).forEach(key => {
+        if (key !== 'icon' && key !== 'name') {
+          requestOptions[key] = preset[key];
+        }
+      });
     }
     
-    // Обработка логотипа
-    let logoData = requestOptions.logo;
-    if (logoData instanceof File) {
-      logoData = await this.fileToBase64(logoData);
-    }
-    
+    // Формируем payload (только нужные поля)
     const payload = {
       url: content,
-      ...requestOptions,
-      logo: logoData
+      size: parseInt(requestOptions.size) || 400,
+      color: requestOptions.color || '#000000',
+      bgColor: requestOptions.bgColor || '#FFFFFF',
+      errorCorrection: requestOptions.errorCorrection || 'M',
+      margin: parseInt(requestOptions.margin) || 2
     };
+
+    // Показываем индикатор загрузки
+    this.showLoading(true);
+    this.isGenerating = true;
 
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 сек таймаут
+      const timeoutId = setTimeout(() => controller.abort(), 30000);
+      
+      console.log('📤 [QRush] Отправка запроса:', { endpoint: this.apiUrl, content: this.truncateContent(content) });
       
       const response = await fetch(this.apiUrl, {
         method: 'POST',
@@ -109,76 +131,71 @@ class QRGenerator {
       clearTimeout(timeoutId);
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
+        let errorMessage = `Ошибка сервера (${response.status})`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          // Ignore
+        }
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      console.log('✅ [QRush] QR сгенерирован:', { 
+        size: payload.size, 
+        time: Math.round(performance.now() - startTime) + 'ms' 
+      });
 
       if (data.success) {
         this.currentQR = data.qr;
         this.currentSVG = data.qrSvg;
-        this.currentDynamicId = data.dynamicId;
+        this.currentDynamicId = data.dynamicId || this.generateDynamicId();
         
         // Сохраняем в историю
         this.addToHistory({
-          content: this.truncateContent(content),
+          content: this.truncateContent(content, 40),
           fullContent: content,
           timestamp: Date.now(),
-          settings: { ...requestOptions },
-          dynamicId: data.dynamicId,
-          size: data.settings?.size || requestOptions.size
+          settings: { size: payload.size, color: payload.color },
+          dynamicId: this.currentDynamicId
         });
+        
+        // Обновляем SEO ключевые слова
+        this.updateSEOKeywords(content);
         
         // Обновляем статистику
         this.updateStats('generated', {
-          size: data.settings?.size,
           time: performance.now() - startTime,
-          preset: requestOptions.preset,
-          hasLogo: !!requestOptions.logo
+          preset: requestOptions.preset
         });
+        
+        // Показываем уведомление об успехе
+        this.showNotification('QR-код успешно создан!', 'success');
         
         return data;
       } else {
-        throw new Error(data.error || 'Unknown error');
+        throw new Error(data.error || 'Неизвестная ошибка');
       }
     } catch (error) {
-      console.error('[QRush] Generation failed:', error);
+      console.error('❌ [QRush] Ошибка генерации:', error);
       
+      let userMessage = 'Не удалось создать QR-код';
       if (error.name === 'AbortError') {
-        throw new Error('Request timeout — please try again');
+        userMessage = 'Превышено время ожидания. Проверьте подключение к интернету.';
+      } else if (error.message.includes('fetch')) {
+        userMessage = 'Проблема с сетью. Проверьте подключение к интернету.';
+      } else {
+        userMessage = error.message;
       }
       
-      throw error;
+      this.showNotification(userMessage, 'error');
+      throw new Error(userMessage);
+      
+    } finally {
+      this.showLoading(false);
+      this.isGenerating = false;
     }
-  }
-
-  // ============================================
-  // 🔄 ПАКЕТНАЯ ГЕНЕРАЦИЯ
-  // ============================================
-  async generateBatch(items, options = {}, onProgress = null) {
-    const results = [];
-    const total = items.length;
-    
-    for (let i = 0; i < total; i++) {
-      try {
-        const result = await this.generate(items[i], options);
-        results.push({ success: true, content: items[i], ...result });
-      } catch (error) {
-        results.push({ success: false, content: items[i], error: error.message });
-      }
-      
-      if (onProgress) {
-        onProgress(i + 1, total, results[i]);
-      }
-      
-      // Небольшая задержка между запросами
-      if (i < total - 1) {
-        await this.sleep(100);
-      }
-    }
-    
-    return results;
   }
 
   // ============================================
@@ -190,50 +207,28 @@ class QRGenerator {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
-          code, 
+          code: code || this.generateDynamicId(), 
           targetUrl,
-          autoGenerate: !code,
           ...options 
         })
       });
 
       if (!response.ok) {
         const error = await response.json().catch(() => ({}));
-        throw new Error(error.message || `HTTP error! status: ${response.status}`);
+        throw new Error(error.message || 'Ошибка сохранения динамического кода');
       }
 
       const data = await response.json();
       
       if (data.success) {
         this.updateStats('dynamic_created');
+        this.showNotification('Динамический QR-код создан!', 'success');
       }
       
       return data;
     } catch (error) {
-      console.error('[QRush] Save dynamic failed:', error);
-      throw error;
-    }
-  }
-
-  async getDynamicInfo(code) {
-    try {
-      const response = await fetch(`${this.saveApiUrl}?code=${code}`);
-      if (!response.ok) throw new Error('Failed to fetch dynamic info');
-      return await response.json();
-    } catch (error) {
-      console.error('[QRush] Get dynamic info failed:', error);
-      throw error;
-    }
-  }
-
-  async deleteDynamic(code) {
-    try {
-      const response = await fetch(`${this.saveApiUrl}?code=${code}`, {
-        method: 'DELETE'
-      });
-      return await response.json();
-    } catch (error) {
-      console.error('[QRush] Delete dynamic failed:', error);
+      console.error('[QRush] Ошибка сохранения динамического кода:', error);
+      this.showNotification(error.message, 'error');
       throw error;
     }
   }
@@ -242,25 +237,33 @@ class QRGenerator {
   // 📥 СКАЧИВАНИЕ
   // ============================================
   downloadPNG(filename = null) {
-    if (!this.currentQR) return false;
+    if (!this.currentQR) {
+      this.showNotification('Сначала создайте QR-код', 'warning');
+      return false;
+    }
     
-    const name = filename || `qrush-${this.sanitizeFilename(this.currentContent || 'qr')}-${Date.now()}.png`;
+    const name = filename || this.generateFilename('png');
     this.downloadFile(this.currentQR, name);
     
     this.updateStats('downloaded_png');
+    this.showNotification('PNG скачан!', 'success');
     return true;
   }
 
   downloadSVG(filename = null) {
-    if (!this.currentSVG) return false;
+    if (!this.currentSVG) {
+      this.showNotification('Сначала создайте QR-код', 'warning');
+      return false;
+    }
     
-    const name = filename || `qrush-${this.sanitizeFilename(this.currentContent || 'qr')}-${Date.now()}.svg`;
+    const name = filename || this.generateFilename('svg');
     const blob = new Blob([this.currentSVG], { type: 'image/svg+xml' });
     const url = URL.createObjectURL(blob);
     this.downloadFile(url, name);
     URL.revokeObjectURL(url);
     
     this.updateStats('downloaded_svg');
+    this.showNotification('SVG скачан!', 'success');
     return true;
   }
 
@@ -268,189 +271,182 @@ class QRGenerator {
     const link = document.createElement('a');
     link.download = filename;
     link.href = url;
+    document.body.appendChild(link);
     link.click();
+    document.body.removeChild(link);
+  }
+
+  generateFilename(ext) {
+    const date = new Date();
+    const dateStr = `${date.getFullYear()}-${(date.getMonth()+1).toString().padStart(2,'0')}-${date.getDate().toString().padStart(2,'0')}`;
+    const contentPart = this.currentContent 
+      ? '-' + this.sanitizeFilename(this.currentContent.slice(0, 20))
+      : '';
+    return `qrush${contentPart}-${dateStr}.${ext}`;
   }
 
   // ============================================
   // 📋 КОПИРОВАНИЕ
   // ============================================
-  async copyToClipboard(type = 'png') {
-    if (type === 'png' && this.currentQR) {
-      try {
-        const blob = await (await fetch(this.currentQR)).blob();
-        await navigator.clipboard.write([
-          new ClipboardItem({ [blob.type]: blob })
-        ]);
-        this.updateStats('copied');
-        return true;
-      } catch (error) {
-        console.error('[QRush] Copy failed:', error);
-        
-        // Fallback
-        const img = document.createElement('img');
-        img.src = this.currentQR;
-        document.body.appendChild(img);
-        
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNode(img);
-        selection.removeAllRanges();
-        selection.addRange(range);
-        document.execCommand('copy');
-        selection.removeAllRanges();
-        document.body.removeChild(img);
-        
-        return true;
+  async copyQRToClipboard() {
+    if (!this.currentQR) return false;
+    
+    try {
+      const response = await fetch(this.currentQR);
+      const blob = await response.blob();
+      await navigator.clipboard.write([
+        new ClipboardItem({ [blob.type]: blob })
+      ]);
+      this.showNotification('QR-код скопирован!', 'success');
+      return true;
+    } catch (error) {
+      // Fallback для старых браузеров
+      this.showNotification('Используйте кнопку "Скачать PNG"', 'info');
+      return false;
+    }
+  }
+
+  async copyContentToClipboard() {
+    if (!this.currentContent) return false;
+    
+    try {
+      await navigator.clipboard.writeText(this.currentContent);
+      this.showNotification('Ссылка скопирована!', 'success');
+      return true;
+    } catch (error) {
+      return false;
+    }
+  }
+
+  // ============================================
+  // 🎨 UI УЛУЧШЕНИЯ
+  // ============================================
+  showLoading(show) {
+    const generateBtn = document.getElementById('generateBtn');
+    if (generateBtn) {
+      if (show) {
+        generateBtn.disabled = true;
+        generateBtn.innerHTML = '<span class="loading-spinner-small"></span> Генерация...';
+      } else {
+        generateBtn.disabled = false;
+        generateBtn.innerHTML = '🚀 Сгенерировать QR';
       }
     }
-    
-    if (type === 'url' && this.currentDynamicId) {
-      const url = this.getDynamicUrl(this.currentDynamicId);
-      await navigator.clipboard.writeText(url);
-      return true;
-    }
-    
-    if (type === 'content' && this.currentContent) {
-      await navigator.clipboard.writeText(this.currentContent);
-      return true;
-    }
-    
-    return false;
   }
 
-  // ============================================
-  // 🖼️ РАБОТА С ЛОГОТИПОМ
-  // ============================================
-  async fileToBase64(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
+  showNotification(message, type = 'info') {
+    // Создаём элемент уведомления
+    const toast = document.createElement('div');
+    toast.className = `qrush-toast qrush-toast-${type}`;
+    toast.innerHTML = `
+      <span class="toast-icon">${this.getToastIcon(type)}</span>
+      <span class="toast-message">${message}</span>
+    `;
+    
+    // Стили для toast
+    Object.assign(toast.style, {
+      position: 'fixed',
+      bottom: '24px',
+      right: '24px',
+      padding: '14px 24px',
+      background: type === 'success' ? '#10b981' : type === 'error' ? '#ef4444' : type === 'warning' ? '#f59e0b' : '#3b82f6',
+      color: 'white',
+      borderRadius: '12px',
+      boxShadow: '0 8px 24px rgba(0,0,0,0.3)',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '12px',
+      zIndex: '10000',
+      transform: 'translateY(100px)',
+      opacity: '0',
+      transition: 'all 0.3s ease',
+      fontWeight: '500',
+      maxWidth: '350px'
     });
-  }
-
-  async urlToBase64(url) {
-    try {
-      const response = await fetch(url);
-      const blob = await response.blob();
-      return await this.fileToBase64(blob);
-    } catch (error) {
-      console.error('[QRush] URL to base64 failed:', error);
-      throw error;
-    }
-  }
-
-  // ============================================
-  // ⭐ ИЗБРАННОЕ
-  // ============================================
-  addToFavorites(name = null) {
-    if (!this.currentQR || !this.currentContent) return false;
     
-    const favorite = {
-      id: Date.now() + '-' + Math.random().toString(36).slice(2, 8),
-      name: name || this.truncateContent(this.currentContent, 30),
-      content: this.currentContent,
-      qr: this.currentQR,
-      svg: this.currentSVG,
-      dynamicId: this.currentDynamicId,
-      settings: { ...this.currentSettings },
-      createdAt: Date.now()
+    document.body.appendChild(toast);
+    
+    // Анимация появления
+    setTimeout(() => {
+      toast.style.transform = 'translateY(0)';
+      toast.style.opacity = '1';
+    }, 10);
+    
+    // Автоматическое скрытие
+    setTimeout(() => {
+      toast.style.transform = 'translateY(100px)';
+      toast.style.opacity = '0';
+      setTimeout(() => {
+        if (toast.parentNode) {
+          document.body.removeChild(toast);
+        }
+      }, 300);
+    }, 3000);
+  }
+
+  getToastIcon(type) {
+    const icons = {
+      success: '✅',
+      error: '❌',
+      warning: '⚠️',
+      info: 'ℹ️'
     };
-    
-    this.favorites.unshift(favorite);
-    
-    // Ограничиваем количество
-    if (this.favorites.length > 50) {
-      this.favorites = this.favorites.slice(0, 50);
-    }
-    
-    this.saveFavorites();
-    return favorite;
-  }
-
-  removeFromFavorites(id) {
-    const index = this.favorites.findIndex(f => f.id === id);
-    if (index !== -1) {
-      this.favorites.splice(index, 1);
-      this.saveFavorites();
-      return true;
-    }
-    return false;
-  }
-
-  loadFromFavorite(id) {
-    const favorite = this.favorites.find(f => f.id === id);
-    if (favorite) {
-      this.currentQR = favorite.qr;
-      this.currentSVG = favorite.svg;
-      this.currentContent = favorite.content;
-      this.currentDynamicId = favorite.dynamicId;
-      this.currentSettings = favorite.settings;
-      return favorite;
-    }
-    return null;
+    return icons[type] || 'ℹ️';
   }
 
   // ============================================
-  // 📜 ИСТОРИЯ
+  // 🔍 SEO ФУНКЦИИ
   // ============================================
-  addToHistory(item) {
-    this.history.unshift(item);
+  loadSEOKeywords() {
+    try {
+      return JSON.parse(localStorage.getItem('qrush_seo_keywords')) || [];
+    } catch {
+      return [];
+    }
+  }
+
+  updateSEOKeywords(content) {
+    // Извлекаем ключевые слова из URL или текста
+    let keywords = [];
     
-    if (this.history.length > this.maxHistoryItems) {
-      this.history = this.history.slice(0, this.maxHistoryItems);
+    try {
+      const url = new URL(content);
+      keywords.push(url.hostname.replace('www.', ''));
+      const pathParts = url.pathname.split('/').filter(p => p && p.length > 2);
+      keywords.push(...pathParts.slice(0, 3));
+    } catch {
+      // Не URL — извлекаем слова из текста
+      const words = content.split(/[\s,.;:!?]+/).filter(w => w.length > 3);
+      keywords.push(...words.slice(0, 5));
     }
     
-    this.saveHistory();
-  }
-
-  loadFromHistory(index) {
-    const item = this.history[index];
-    if (item) {
-      this.currentContent = item.fullContent;
-      this.currentSettings = item.settings;
-      return item;
+    // Добавляем в историю SEO
+    this.seoKeywords = [...new Set([...keywords, ...this.seoKeywords])].slice(0, 50);
+    
+    try {
+      localStorage.setItem('qrush_seo_keywords', JSON.stringify(this.seoKeywords));
+    } catch (e) {
+      // Ignore
     }
-    return null;
+    
+    // Обновляем meta keywords если есть доступ
+    this.updateMetaKeywords();
   }
 
-  clearHistory() {
-    this.history = [];
-    this.saveHistory();
+  updateMetaKeywords() {
+    const metaKeywords = document.querySelector('meta[name="keywords"]');
+    if (metaKeywords && this.seoKeywords.length > 0) {
+      const currentKeywords = metaKeywords.getAttribute('content') || '';
+      const newKeywords = [...new Set([...currentKeywords.split(','), ...this.seoKeywords])]
+        .filter(k => k.trim())
+        .slice(0, 20)
+        .join(', ');
+      metaKeywords.setAttribute('content', newKeywords);
+    }
   }
 
-  // ============================================
-  // 🔧 ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
-  // ============================================
-  getDynamicUrl(code) {
-    return `${window.location.origin}/q/${code || this.currentDynamicId}`;
-  }
-
-  getQRDataURL() {
-    return this.currentQR;
-  }
-
-  getSVGString() {
-    return this.currentSVG;
-  }
-
-  getCurrentSettings() {
-    return { ...this.currentSettings };
-  }
-
-  truncateContent(content, maxLength = 50) {
-    if (!content) return '';
-    if (content.length <= maxLength) return content;
-    return content.substring(0, maxLength - 3) + '...';
-  }
-
-  sanitizeFilename(name) {
-    return name.replace(/[^a-z0-9а-яё]/gi, '-').replace(/-+/g, '-').toLowerCase().slice(0, 50);
-  }
-
-  sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+  getSEOKeywords() {
+    return this.seoKeywords;
   }
 
   // ============================================
@@ -463,10 +459,7 @@ class QRGenerator {
         downloaded_png: 0,
         downloaded_svg: 0,
         dynamic_created: 0,
-        copied: 0,
         totalTime: 0,
-        avgTime: 0,
-        presetsUsed: {},
         firstUse: Date.now(),
         lastUse: Date.now()
       };
@@ -480,11 +473,10 @@ class QRGenerator {
     
     switch (action) {
       case 'generated':
-        this.stats.generated++;
-        this.stats.totalTime = (this.stats.totalTime || 0) + (details.time || 0);
-        this.stats.avgTime = this.stats.totalTime / this.stats.generated;
-        if (details.preset) {
-          this.stats.presetsUsed[details.preset] = (this.stats.presetsUsed[details.preset] || 0) + 1;
+        this.stats.generated = (this.stats.generated || 0) + 1;
+        if (details.time) {
+          this.stats.totalTime = (this.stats.totalTime || 0) + details.time;
+          this.stats.avgTime = Math.round(this.stats.totalTime / this.stats.generated);
         }
         break;
       case 'downloaded_png':
@@ -496,9 +488,6 @@ class QRGenerator {
       case 'dynamic_created':
         this.stats.dynamic_created = (this.stats.dynamic_created || 0) + 1;
         break;
-      case 'copied':
-        this.stats.copied = (this.stats.copied || 0) + 1;
-        break;
     }
     
     this.saveStats();
@@ -508,7 +497,7 @@ class QRGenerator {
     try {
       localStorage.setItem('qrush_stats', JSON.stringify(this.stats));
     } catch (e) {
-      console.warn('[QRush] Failed to save stats:', e);
+      // Ignore
     }
   }
 
@@ -529,10 +518,18 @@ class QRGenerator {
 
   saveHistory() {
     try {
-      localStorage.setItem('qrush_history', JSON.stringify(this.history));
+      localStorage.setItem('qrush_history', JSON.stringify(this.history.slice(0, 50)));
     } catch (e) {
-      console.warn('[QRush] Failed to save history:', e);
+      // Ignore
     }
+  }
+
+  addToHistory(item) {
+    this.history.unshift(item);
+    if (this.history.length > this.maxHistoryItems) {
+      this.history = this.history.slice(0, this.maxHistoryItems);
+    }
+    this.saveHistory();
   }
 
   loadFavorites() {
@@ -547,46 +544,71 @@ class QRGenerator {
     try {
       localStorage.setItem('qrush_favorites', JSON.stringify(this.favorites));
     } catch (e) {
-      console.warn('[QRush] Failed to save favorites:', e);
+      // Ignore
     }
   }
 
   // ============================================
-  // 🎨 ПРЕСЕТЫ
+  // 🔧 ВСПОМОГАТЕЛЬНЫЕ МЕТОДЫ
+  // ============================================
+  generateDynamicId(length = 8) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let id = '';
+    for (let i = 0; i < length; i++) {
+      id += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return id;
+  }
+
+  getDynamicUrl(code) {
+    return `${window.location.origin}/q/${code || this.currentDynamicId}`;
+  }
+
+  truncateContent(content, maxLength = 50) {
+    if (!content) return '';
+    if (content.length <= maxLength) return content;
+    return content.substring(0, maxLength - 3) + '...';
+  }
+
+  sanitizeFilename(name) {
+    return name
+      .replace(/[^a-z0-9а-яё]/gi, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '')
+      .toLowerCase()
+      .slice(0, 50);
+  }
+
+  capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  // ============================================
+  // 🎨 ПОЛУЧЕНИЕ ПРЕСЕТОВ
   // ============================================
   getPresets() {
-    return Object.keys(this.presets).map(key => ({
-      id: key,
-      name: this.capitalize(key),
-      ...this.presets[key]
+    return Object.entries(this.presets).map(([id, preset]) => ({
+      id,
+      name: preset.name || this.capitalize(id),
+      icon: preset.icon || '🎨',
+      color: preset.color,
+      bgColor: preset.bgColor
     }));
   }
 
   applyPreset(presetId) {
-    if (this.presets[presetId]) {
-      return { ...this.defaultSettings, ...this.presets[presetId], preset: presetId };
-    }
-    return null;
-  }
-
-  // ============================================
-  // 📤 ЭКСПОРТ/ИМПОРТ НАСТРОЕК
-  // ============================================
-  exportSettings() {
-    return {
-      defaultSettings: this.defaultSettings,
-      presets: this.presets,
-      version: '1.0'
-    };
-  }
-
-  importSettings(settings) {
-    if (settings.defaultSettings) {
-      this.defaultSettings = { ...this.defaultSettings, ...settings.defaultSettings };
-    }
-    if (settings.presets) {
-      this.presets = { ...this.presets, ...settings.presets };
-    }
+    const preset = this.presets[presetId];
+    if (!preset) return null;
+    
+    const settings = { ...this.defaultSettings };
+    Object.keys(preset).forEach(key => {
+      if (key !== 'icon' && key !== 'name') {
+        settings[key] = preset[key];
+      }
+    });
+    settings.preset = presetId;
+    
+    return settings;
   }
 
   // ============================================
@@ -601,69 +623,18 @@ class QRGenerator {
   }
 
   clearAllData() {
-    this.clearHistory();
+    localStorage.removeItem('qrush_history');
+    localStorage.removeItem('qrush_favorites');
+    localStorage.removeItem('qrush_stats');
+    localStorage.removeItem('qrush_seo_keywords');
+    
+    this.history = [];
     this.favorites = [];
-    this.saveFavorites();
+    this.stats = { generated: 0, firstUse: Date.now(), lastUse: Date.now() };
+    this.seoKeywords = [];
+    
     this.reset();
-  }
-
-  // ============================================
-  // 🔤 УТИЛИТЫ
-  // ============================================
-  capitalize(str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  }
-
-  formatBytes(bytes, decimals = 2) {
-    if (bytes === 0) return '0 Bytes';
-    const k = 1024;
-    const dm = decimals < 0 ? 0 : decimals;
-    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-    const i = Math.floor(Math.log(bytes) / Math.log(k));
-    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-  }
-
-  // ============================================
-  // 🔄 ОЧЕРЕДЬ ГЕНЕРАЦИИ
-  // ============================================
-  async addToQueue(content, options = {}, priority = 0) {
-    return new Promise((resolve, reject) => {
-      this.queue.push({ content, options, priority, resolve, reject });
-      this.queue.sort((a, b) => b.priority - a.priority);
-      this.processQueue();
-    });
-  }
-
-  async processQueue() {
-    if (this.isProcessing || this.queue.length === 0) return;
-    
-    this.isProcessing = true;
-    
-    while (this.queue.length > 0) {
-      const item = this.queue.shift();
-      
-      try {
-        const result = await this.generate(item.content, item.options);
-        item.resolve(result);
-      } catch (error) {
-        item.reject(error);
-      }
-      
-      await this.sleep(50);
-    }
-    
-    this.isProcessing = false;
-  }
-
-  clearQueue() {
-    this.queue.forEach(item => {
-      item.reject(new Error('Queue cleared'));
-    });
-    this.queue = [];
-  }
-
-  getQueueLength() {
-    return this.queue.length;
+    this.showNotification('Все данные очищены', 'info');
   }
 }
 
@@ -678,5 +649,53 @@ if (typeof window !== 'undefined') {
     window.qrush = {};
   }
   window.qrush.generator = new QRGenerator();
+  
+  console.log('🚀 QRush Generator loaded — Ready to create amazing QR codes!');
 }
 
+// ============================================
+// 🎨 ДОБАВЛЯЕМ СТИЛИ ДЛЯ ТОСТОВ И СПИННЕРА
+// ============================================
+if (typeof document !== 'undefined') {
+  const style = document.createElement('style');
+  style.textContent = `
+    .loading-spinner-small {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: qrush-spin 0.8s linear infinite;
+      display: inline-block;
+      margin-right: 8px;
+    }
+    
+    @keyframes qrush-spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .qrush-toast {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .qrush-toast-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    }
+    
+    .qrush-toast-error {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    }
+    
+    .qrush-toast-warning {
+      background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    }
+    
+    .qrush-toast-info {
+      background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    }
+  `;
+  document.head.appendChild(style);
+}
