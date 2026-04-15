@@ -1,47 +1,25 @@
 {
-  "builds": [
-    {
-      "src": "api/*.js",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "index.html",
-      "use": "@vercel/static"
-    },
-    {
-      "src": "assets/**/*",
-      "use": "@vercel/static"
+  "functions": {
+    "api/generate.js": {
+      "runtime": "@vercel/node@3.0.11",
+      "maxDuration": 10
     }
-  ],
-  "routes": [
+  },
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "source": "/api/generate",
+      "destination": "/api/generate"
     },
     {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/(.*\\.(html|css|js|json|png|svg|ico))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
     {
       "source": "/api/(.*)",
       "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "Access-Control-Allow-Methods", "value": "GET, POST, OPTIONS" },
-        { "key": "Access-Control-Allow-Headers", "value": "Content-Type" }
+        { "key": "Access-Control-Allow-Origin", "value": "*" }
       ]
     }
   ]
