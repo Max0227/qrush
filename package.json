@@ -2,10 +2,9 @@
   "name": "qrush",
   "version": "1.0.0",
   "description": "QRush — генератор QR-кодов с аналитикой",
-  "main": "index.html",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
-    "build": "echo 'No build step required'"
+    "build": "echo 'No build step'"
   },
   "dependencies": {
     "qrcode": "^1.5.3"

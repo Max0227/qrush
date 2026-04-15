@@ -13,19 +13,7 @@
       "use": "@vercel/static"
     }
   ],
-  "functions": {
-    "api/index.js": {
-      "runtime": "@vercel/node@3.0.11",
-      "maxDuration": 10,
-      "memory": 1024,
-      "includeFiles": "**/*"
-    }
-  },
   "routes": [
-    {
-      "src": "/q/(.*)",
-      "dest": "/api/index"
-    },
     {
       "src": "/api/(.*)",
       "dest": "/api/index"
@@ -37,15 +25,6 @@
     {
       "src": "/(.*)",
       "dest": "/api/index"
-    }
-  ],
-  "headers": [
-    {
-      "source": "/(.*)",
-      "headers": [
-        { "key": "Access-Control-Allow-Origin", "value": "*" },
-        { "key": "X-Content-Type-Options", "value": "nosniff" }
-      ]
     }
   ]
 }
