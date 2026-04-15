@@ -1,4 +1,18 @@
 {
+  "builds": [
+    {
+      "src": "api/index.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "assets/**",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
+    }
+  ],
   "functions": {
     "api/index.js": {
       "runtime": "@vercel/node@3.0.11",
@@ -10,7 +24,7 @@
   "routes": [
     {
       "src": "/q/(.*)",
-      "dest": "/api/index?code=$1"
+      "dest": "/api/index"
     },
     {
       "src": "/api/(.*)",
