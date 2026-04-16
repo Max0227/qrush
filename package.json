@@ -1,9 +1,13 @@
 {
   "name": "qrush",
   "version": "1.0.0",
+  "description": "QRush — генератор QR-кодов с аналитикой",
   "type": "module",
   "engines": {
     "node": "20.x"
+  },
+  "scripts": {
+    "build": "echo 'No build step'"
   },
   "dependencies": {
     "qrcode": "^1.5.3"
